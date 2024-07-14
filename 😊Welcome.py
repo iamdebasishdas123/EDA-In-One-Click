@@ -17,8 +17,13 @@ if uploaded_file is not None:
     st.write("Dataset uploaded successfully!")
     
     # Display first few rows
-    st.header("Dataset")
-    st.write(df.head())
+    st.markdown("## About This App" )
+    st.markdown("### First page of dataset about Basic Information")
+    st.markdown("### Second page of dataset about Graph,Relation ,Hypothesis test, Normality Test etc")
+    st.markdown("""
+        <div class="footer">
+        <p>Created by - 📊Debasish Das📉</p>
+        """,unsafe_allow_html=True)
     
    
     
