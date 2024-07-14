@@ -21,12 +21,12 @@ if 'dataframe' in st.session_state:
     st.write("Columns:", df.columns.tolist())
     
     # Redirect df.info() output to a buffer
-buffer = io.StringIO()
-df.info(buf=buffer)
-info = buffer.getvalue()
+    buffer = io.StringIO()
+    df.info(buf=buffer)
+    info = buffer.getvalue()
 
-# Display the info in Streamlit
-st.text(info)
+    # Display the info in Streamlit
+    st.text(info)
     
     
     st.write("Missing Values:")
