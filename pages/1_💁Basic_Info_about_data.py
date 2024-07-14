@@ -17,8 +17,8 @@ if 'dataframe' in st.session_state:
     st.write(f"Number of columns: {cols}")
     
     st.write("Data Types:")
-    buffer = df.info(buf=None)
-    st.write(buffer)
+    st.text(df.info())
+    
     
     st.write("Missing Values:")
     st.write(df.isnull().sum())
