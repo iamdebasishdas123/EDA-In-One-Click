@@ -16,7 +16,6 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from wordcloud import WordCloud, STOPWORDS
-from IPython.display import display, HTML
 
  # Visualizations
 st.header("Visualizations")
@@ -480,7 +479,7 @@ def cat_summary(data, var):
 
 # hypothesis testing for association between numeric and categorical variable
 def num_cat_hyp_testing(data, num_var, cat_var, alpha=0.05):
-  display_html(2, f"Hypothesis Test for Association between {num_var} and {cat_var}")
+  st.write( f"Hypothesis Test for Association between {num_var} and {cat_var}")
 
   groups_df = (
       data
@@ -493,7 +492,7 @@ def num_cat_hyp_testing(data, num_var, cat_var, alpha=0.05):
   anova = stats.f_oneway(*groups)
   statistic = anova[0]
   pvalue = anova[1]
-  display_html(3, "ANOVA Test")
+  st.markdown("### Anova test")
   st.write(f"- {'Significance Level':21}: {alpha * 100}%")
   st.write(f"- {'Null Hypothesis':21}: The groups have similar population mean")
   st.write(f"- {'Alternate Hypothesis':21}: The groups don't have similar population mean")
@@ -510,7 +509,7 @@ def num_cat_hyp_testing(data, num_var, cat_var, alpha=0.05):
   kruskal = stats.kruskal(*groups)
   statistic = kruskal[0]
   pvalue = kruskal[1]
-  display_html(3, "Kruskal-Wallis Test")
+  st.markdown("### Kruskal-Wallis Test")
   st.write(f"- {'Significance Level':21}: {alpha * 100}%")
   st.write(f"- {'Null Hypothesis':21}: The groups have similar population median")
   st.write(f"- {'Alternate Hypothesis':21}: The groups don't have similar population median")
@@ -1138,40 +1137,67 @@ if 'dataframe' in st.session_state:
     
     eda_column = st.sidebar.selectbox("Select a column for EDA", column_names)
     target_column = st.sidebar.selectbox("Select a target column for bivariate plots (optional)", [None] + column_names)
-    plot_type = st.sidebar.selectbox("Select plot type (optional)", [None, "Distribution", "Box Plot", "Count Plot", "Pair Plot", "Correlation Heatmap"])
+    plot_type = st.sidebar.selectbox("Select type of information(optional)", [None, "Summary", "Univarient Plot", "Bivarient Plot", "Pair Plot", "Correlation Heatmap","Outlier"])
 
-    if st.sidebar.button("Generate Plots"):
-        
-        ## Categorical Column
-        if eda_column in categorical_columns and target_column == None and plot_type==None :
-            cat_summary(df,eda_column)
-            cat_univar_plots(df,eda_column)
-        elif eda_column in categorical_columns and target_column !=None and plot_type==None:
-            if target_column in categorical_columns:
-                cat_bivar_plots(df,eda_column, target_column)
-            elif target_column in numerical_columns:
-                num_cat_hyp_testing(df,target_column,eda_column)
-                num_cat_bivar_plots(df,eda_column, target_column)
-            else :
-                st.write("some error in target_column")
-        elif eda_column in categorical_columns and target_column !=None and plot_type!=None :
-            pass
-        ## Numeric Column
-        elif eda_column in numerical_columns and target_column ==None and plot_type==None :
-            num_summary(df, eda_column)
-        elif eda_column in numerical_columns and target_column !=None and plot_type==None :
+if st.sidebar.button("Generate Plots"):
+    # Categorical Column
+    if eda_column in categorical_columns and target_column == None and plot_type==None:
+        cat_summary(df, eda_column)
+        cat_univar_plots(df, eda_column)
+    elif eda_column in categorical_columns and target_column !=None and plot_type==None:
+        if target_column in categorical_columns:
+            cat_bivar_plots(df, eda_column, target_column)
+        elif target_column in numerical_columns:
+            num_cat_hyp_testing(df, target_column, eda_column)
+            num_cat_bivar_plots(df, target_column, eda_column)
+        else:
+            st.write("Some error in target_column")
+    elif eda_column in categorical_columns and plot_type!=None:
+        if plot_type=="Summary":
+            cat_summary(df, eda_column)
+        elif plot_type=="Univarient Plot":
+            cat_univar_plots(df, eda_column)
+        elif plot_type=="Bivarient Plot":
             if target_column in numerical_columns:
-                num_num_hyp_testing(df,target_column,eda_column)
-                num_bivar_plots(df,eda_column, target_column)
+                num_cat_bivar_plots(df, eda_column, target_column)
             elif target_column in categorical_columns:
-                num_cat_bivar_plots(df,eda_column, target_column)
-            else :
-                st.write("some error in target_column")
-        elif eda_column in numerical_columns and target_column !=None and plot_type!=None :
-            pass
-        else :
-            pass
-       
+                cat_bivar_plots(df, eda_column, target_column)
+        elif plot_type=="Pair Plot":
+            pair_plots(df)
+        elif plot_type=="Correlation Heatmap":
+            correlation_heatmap(df)
+        elif plot_type=="Outlier":
+            get_iqr_outliers(df, eda_column)
+    # Numeric Column
+    elif eda_column in numerical_columns and target_column ==None and plot_type==None:
+        num_summary(df, eda_column)
+        num_univar_plots(df, eda_column)
+    elif eda_column in numerical_columns and target_column !=None and plot_type==None:
+        if target_column in numerical_columns:
+            num_num_hyp_testing(df, target_column, eda_column)
+            num_bivar_plots(df, eda_column, target_column)
+        elif target_column in categorical_columns:
+            num_cat_bivar_plots(df, eda_column, target_column)
+        else:
+            st.write("Some error in target_column")
+    elif eda_column in numerical_columns and plot_type!=None:
+        if plot_type=="Summary":
+            num_summary(df, eda_column)
+        elif plot_type=="Univarient Plot":
+            num_univar_plots(df, eda_column)
+        elif plot_type=="Bivarient Plot":
+            if target_column in numerical_columns:
+                num_bivar_plots(df, eda_column, target_column)
+            elif target_column in categorical_columns:
+                num_cat_bivar_plots(df, eda_column, target_column)
+        elif plot_type=="Pair Plot":
+            pair_plots(df)
+        elif plot_type=="Correlation Heatmap":
+            correlation_heatmap(df)
+        elif plot_type=="Outlier":
+            get_iqr_outliers(df, eda_column)
+    else:
+        st.write("Check the code")       
 else:
     st.write("Please upload a CSV file to start the EDA.")
     

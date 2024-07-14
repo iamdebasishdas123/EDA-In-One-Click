@@ -1,8 +1,5 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import eda_helper_functions as eda_helper
 
 # Setup Streamlit
 st.set_page_config(page_title="EDA App", layout="wide")
@@ -23,7 +20,5 @@ if uploaded_file is not None:
     st.header("Dataset")
     st.write(df.head())
     
-    # Basic Information
-    st.header("Basic Information")
    
     

@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import eda_helper_functions as eda_helper
 
 st.header("Basic Information About Dataset")
 
@@ -10,7 +9,7 @@ st.header("Basic Information About Dataset")
 if 'dataframe' in st.session_state:
     df = st.session_state['dataframe']
     st.write("Here is the dataset from the main page:")
-    st.dataframe(df)
+    st.dataframe(df.head(5))
     
     # Basic Information about dataset
     rows, cols = df.shape
@@ -19,7 +18,7 @@ if 'dataframe' in st.session_state:
     
     st.write("Data Types:")
     buffer = df.info(buf=None)
-    st.text(buffer)
+    st.write(buffer)
     
     st.write("Missing Values:")
     st.write(df.isnull().sum())
