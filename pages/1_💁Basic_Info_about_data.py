@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import io
 
 st.header("Basic Information About Dataset")
 
@@ -17,7 +18,15 @@ if 'dataframe' in st.session_state:
     st.write(f"Number of columns: {cols}")
     
     st.write("Data Types:")
-    st.text(df.info())
+    st.write("Columns:", df.columns.tolist())
+    
+    # Redirect df.info() output to a buffer
+buffer = io.StringIO()
+df.info(buf=buffer)
+info = buffer.getvalue()
+
+# Display the info in Streamlit
+st.text(info)
     
     
     st.write("Missing Values:")
