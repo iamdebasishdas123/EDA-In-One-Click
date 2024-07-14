@@ -18,8 +18,6 @@ if 'dataframe' in st.session_state:
     st.write(f"Number of columns: {cols}")
     
     st.write("Data Types:")
-    st.write("Columns:", df.columns.tolist())
-    
     # Redirect df.info() output to a buffer
     buffer = io.StringIO()
     df.info(buf=buffer)
