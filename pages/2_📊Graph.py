@@ -1082,10 +1082,6 @@ def get_iqr_outliers(data, var, band=1.5):
 
 
 # univariate plots for date-time variables
-import streamlit as st
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 def dt_univar_plots(data, var, target=None, bins="auto"):
     st.markdown(f"### Univariate plots of {var}")
     col = data.loc[:, var].copy()
