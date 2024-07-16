@@ -1,6 +1,6 @@
 # EDA in one click
 ### "EDA-In-One-Click" is a Streamlit application that simplifies Exploratory Data Analysis (EDA) by allowing users to perform various EDA tasks with just one click.
-### [Streamlit App](https://eda-in-one-click-8gqlw8te5tn6zbyuf5n8qn.streamlit.app)
+### [Streamlit App Link](https://eda-in-one-click-8gqlw8te5tn6zbyuf5n8qn.streamlit.app)
 
 ---
 
